@@ -1,0 +1,107 @@
+<div class="header">
+    <div class="hexagon">
+            <img src="assets\images\hexagonal.png" alt="logo tribar">
+            <div class="text-overlay">TRIBARYA</div>
+    </div>
+    <div class="bar-name">
+        <p>BarName</p>
+    </div>
+
+</div>
+<img src="assets\images\hojaI.png" alt="hojaI" class="hoja I">
+<img src="assets\images\hojaD.png" alt="hojaD" class="hoja D">
+
+<div class="bar-dashboard">
+    
+    <div class="row-1">
+        <div class="col-1">            
+                <button type="submit" [disabled]="false"
+                class="main-button">Generar reserva</button>
+
+                <button type="submit" [disabled]="false"
+                class="main-button">Gestionar evento</button>            
+        </div>
+
+       <div class="col-2"> 
+            <div class="box-total ">
+                <p class="value">{{numberejm}}</p>
+                <p class="title">Total</p>
+            </div>
+            
+            <div class="box-confirm ">
+                <p class="value">{{numberejm}}</p>
+                <p class="title">Confirmadas</p>
+            </div>
+        </div>  
+    </div>
+
+    <div class="form-group">
+        <span class="code">Codigo</span>
+        <input class="form-field" type="text">
+    </div>
+    <div class="main-reservation">
+        <!--sinconfirmar-->
+        <div class="card"> 
+                        
+            <ng-container  *ngFor="let reserva of reservationsList">
+                <div class="reservation">
+                    <div class="label">
+                        <input type="radio" id="" name="radio1" value="option1">
+                        <label > Nueva reserva {{reserva.code}} </label>
+                    </div>
+                    <div  class="buttons">
+                        <button  class="my-custom-button" (click)="editFormat()">
+                            <mat-icon>edit</mat-icon>                        
+                        </button>
+                          
+                        <button class="my-custom-button" (click)="deleteFormat()">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button> 
+                    </div>  
+                    
+                </div>
+            </ng-container>
+
+            <div class="numtotal">
+                <p>{{numberejm}}</p>
+            </div>
+
+        </div>
+         <!--cuadro-->
+
+        <div class="transparent">
+           
+        </div>
+        <div class="card">
+            <!--confirmadas-->
+            <ng-container  *ngFor="let reserva of reservationsList">
+                <div class="reservation">
+                    <div class="label">
+                        <input type="radio" id="" name="radio1" value="option1">
+                    <label > Reserva de {{reserva.code}} </label>
+                    </div>
+                    <div  class="buttons">
+                        <button  class="my-custom-button" (click)="editFormat()">
+                            <mat-icon>edit</mat-icon>                        
+                        </button>
+                          
+                        <button class="my-custom-button" (click)="deleteFormat()">
+                            <mat-icon>delete_outline</mat-icon>
+                        </button>                       
+                    </div>  
+                    
+                </div>
+            </ng-container>
+            <div class="numconfirm">
+                <p>{{numberejm}}</p>
+            </div>
+
+        </div>
+    </div>
+
+    
+
+</div>
+
+
+

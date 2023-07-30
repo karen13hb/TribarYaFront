@@ -1,1 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Oswald', sans-serif;
+    font-family: 'Signika Negative', sans-serif;
+  }
+
+  body{
+    font-family: 'Oswald', sans-serif;
+    font-family: 'Signika Negative', sans-serif;
+    background-image: url('assets/images/Fondo.png');
+  }
+
+  html, body{
+    height: 100%;
+  }
