@@ -15,8 +15,8 @@ export class ReservationsService {
    }
 
    getReservationsList(barId:string){
-    const params = new HttpParams().set('barId', barId);
-    return this.http.get<any>(`${this.ApiURL}/reservation/listar-reservaciones`,{ params: params }).pipe(
+  
+    return this.http.get<any>(`${this.ApiURL}/reservation/listar-reservaciones/${barId}`).pipe(
 			retry(2)
 		);
    }

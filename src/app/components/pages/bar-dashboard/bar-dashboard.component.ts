@@ -14,7 +14,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   ejemplo:string ="ejemplo"
   numberejm:number =10
 
-  public barId = '64c42012b9f3758f7536ee73';
+  public barId = '64c7105edca8daffadb426ba';
   private subscription: Subscription;
   reservationsList: reservationsDto[] = [];
 
@@ -36,7 +36,9 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
 
     this.reservationsService.getReservationsList(this.barId).subscribe({
       next: (response) => {
-        console.log('Lista de reservaciones:', response);
+        console.log('Lista de reservaciones:', response.reservations);
+        this.reservationsList = response.reservations
+        
       },
       error: (error) => {
         console.error('Error al obtener la lista de reservaciones:', error);
