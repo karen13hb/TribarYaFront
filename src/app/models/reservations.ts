@@ -5,10 +5,10 @@ export class reservationsDto {
     confirmated:boolean;
     expireAt:Date;
     zoneUTC:string;
-    numberPeople:number;
+    numberOfpeople:number;
     isDelete:boolean;
     createDate:Date;
-    idReserva:string;
+    _id:string;
 
     
     constructor() {
@@ -17,10 +17,10 @@ export class reservationsDto {
         this.confirmated=false;
         this.expireAt=new Date();
         this.zoneUTC="";
-        this.numberPeople=0;
+        this.numberOfpeople=0;
         this.isDelete=false;
         this.createDate=new Date();
-        this.idReserva="";      
+        this._id="";      
     }
 
 }

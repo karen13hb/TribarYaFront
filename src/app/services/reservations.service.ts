@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { retry } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { reservationResponse } from '../interfaces/IListarReserva';
 
 @Injectable({
   providedIn: 'root'
@@ -15,10 +16,22 @@ export class ReservationsService {
    }
 
    getReservationsList(barId:string){
-    const params = new HttpParams().set('barId', barId);
-    return this.http.get<any>(`${this.ApiURL}/reservation/listar-reservaciones`,{ params: params }).pipe(
+    return this.http.get<reservationResponse>(`${this.ApiURL}/reservation/listar-reservaciones/${barId}`).pipe(
 			retry(2)
 		);
+   }
+
+   deleteReservation(query:any){
+
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      body: query
+    };
+
+    return this.http.delete<void>(`${this.ApiURL}/reservation`, httpOptions).pipe(
+      retry(2)
+      );
+
    }
 
 }

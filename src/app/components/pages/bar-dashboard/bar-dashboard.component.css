@@ -1,26 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Oswald&family=Signika+Negative:wght@300&display=swap');
-.hoja{
-    position: absolute;
-    width: 10%;
-    height: 40%;
-   
-    
-    
+.bar-dashboard{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
-.D{
-    left: 90%;
-    top: 30%;  
-}
-.I{   
-    bottom: 100%;
-    top: 40%;  
-}
-
 
 .header {
+    
     position: relative;
     width: 100%;
-    height: 8%;
+    height: 7%;
     background-color: #110D20;
     display: flex; 
     justify-content: flex-end; 
@@ -28,25 +17,15 @@
     font-weight: bolder;
     border-bottom: 4px solid #2E1F4D;
 }
-
-.bar-name {
-    color: white; 
-    margin-right: 10%; 
-
-}
-
 .hexagon {
     position: relative;
     width: 10%;
-    height: 250%;
-    align-items: center;
     right: 30%;
+    margin-top: 4%;
 }
-
 .hexagon img {
     width: 100%;
     height: 100%;
-    transform: translate(30deg);
 }
 
 .text-overlay {
@@ -55,9 +34,28 @@
     left: 50%;
     transform: translate(-50%, -50%); 
     color: white; 
-    font-size: 1.5rem; 
-    padding-top: 15%;
+    font-size: 1rem; 
 }
+.bar-name {
+    color: white; 
+    margin-right: 10%; 
+
+}
+
+.hoja{
+    position: absolute;
+    width: 10%;
+    height: 40%;    
+}
+.right{
+    left: 90%;
+    top: 30%;  
+}
+.left{   
+    bottom: 100%;
+    top: 40%;  
+}
+
 .form-group{
     margin-left: 2.5%;
     height: 8%;
@@ -84,15 +82,14 @@
     width: 70%;
     border-radius: 0px 5px 5px 0px;
     border-style: none;
-    font-size: x-large; /* Ajustamos el tamaño de fuente del input */
+    font-size: x-large; 
     padding: 0 10px; 
 }
 .form-field:focus {
     outline: none;
 }
 
-
-.bar-dashboard{
+.main{
     display: flex;
     flex-direction: column;
     height: 92%;
@@ -101,7 +98,7 @@
 .row-1{
     display: flex;
     width: 95%;
-    height: 30%;
+    height: 22%;
     margin: 0% 2.5%;
 }
 .col-1,.col-2 {
@@ -117,13 +114,15 @@
     border-radius: 5px;
     background: #6C757D;
     color:white;
-    padding: 1rem ;
     width: 30%;
-    height: 35%;
+    height: 40%;
     font-size: 1.2rem;
     font-weight: 700;
     cursor: pointer;    
-    border-style: none;        
+    border-style: none; 
+    display: flex;
+    justify-content: center;
+    align-items: center;       
 }
 .main-button:hover{
     background-color: #7f878f;
@@ -135,7 +134,7 @@
 .box-confirm,.box-total{
     display: flex;
     width: 20%;
-    height: 60%;
+    height: 70%;
     border-radius: 5px;
     font-weight: 700;
     justify-content: center;
@@ -187,16 +186,16 @@ font-size: 3rem;
     margin-top: 5%;
 }
 .card::-webkit-scrollbar {
-    width: 8px; /* Ancho del scroll */
+    width: 8px; 
   }
   
   .card::-webkit-scrollbar-track {
-    background-color: transparent; /* Color de la pista del scroll */
+    background-color: transparent; 
     border-radius: 0px 10px 10px 0px;
   }
   
   .card::-webkit-scrollbar-thumb {
-    background-color: #6C757D; /* Color de la barra del scroll */
+    background-color: #6C757D; 
     border-radius: 5px;
   }
 
@@ -223,32 +222,28 @@ font-size: 3rem;
     align-items: center;
   }
 
-
-
-.my-custom-button{
+.reservation-button{
     background-color: transparent;
     border-style: none;
     color: black;   
 }
-.my-custom-button mat-icon {
+.reservation-button mat-icon {
     font-size: 20px; /* Tamaño del ícono */
     align-items: center;
     display: flex;    
     cursor: pointer;   
 }
-.transparent{
+.transparent-card{
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.16);
     box-shadow: 2px 2px 10px 5px #FFF inset;
     width: 47%;
     height: 60%;
     position: absolute;
-    z-index: 0;
-    margin-bottom: 8%;
-    
+    margin-bottom: 8%;    
 }
 
-.numtotal,.numconfirm{
+.box{
     width: 5%;
     height: 12%;
     background-color: #DCA000;
@@ -263,10 +258,10 @@ font-size: 3rem;
     color: white;
     box-shadow: 1px -1px 6px 0px #000;
 }
-.numconfirm{
+.confirm{
     margin-right: 45%;    
 }
-.numtotal{
+.total{
     left: 0;
 }
 

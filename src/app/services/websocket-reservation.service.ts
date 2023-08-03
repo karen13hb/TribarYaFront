@@ -9,8 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class WebsocketReservationService implements OnDestroy {
-  barId: string = '';
-  respuesta: reservationsDto[] = [];
+
   private messagesSubject: Subject<reservationsDto> = new Subject<reservationsDto>();
   private unsubscribe$: Subject<void> = new Subject<void>();
   socket: any;
@@ -18,17 +17,11 @@ export class WebsocketReservationService implements OnDestroy {
 
 
   public connect(bar: string) {
-    
-    
-    this.barId = bar;
-    this.socket = io(environment.apiUrl, { query: { barId: this.barId }});
-
-
+    this.socket = io(environment.apiUrl, { query: { barId: bar }});
 
     this.socket.on('notificationBar', (respuesta: any) => {
       this.messagesSubject.next(respuesta);
     });
-
 
   }
 
