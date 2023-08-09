@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { reservationsDto } from '../models/reservations';
+import { Reservation } from 'src/app/interfaces/IListarReserva';
 import { Subject, takeUntil } from 'rxjs';
 import { io } from "socket.io-client";
 import { environment } from 'src/environments/environment';
@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
 })
 export class WebsocketReservationService implements OnDestroy {
 
-  private messagesSubject: Subject<reservationsDto> = new Subject<reservationsDto>();
+  private messagesSubject: Subject<Reservation> = new Subject<Reservation>();
   private unsubscribe$: Subject<void> = new Subject<void>();
   socket: any;
   constructor() { }

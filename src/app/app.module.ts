@@ -9,9 +9,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { SocketIoModule } from 'ngx-socket-io';
-import { socketIoConfig } from './socket-io.config';
 import { HttpClientModule } from '@angular/common/http';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 const appRoutes: Routes=[
@@ -34,8 +34,9 @@ const appRoutes: Routes=[
     MatIconModule,
     MatButtonModule,
     FontAwesomeModule,
-    SocketIoModule.forRoot(socketIoConfig),
-    HttpClientModule
+    HttpClientModule,
+    ScrollingModule,
+    MatProgressBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,6 +8,10 @@ export interface Reservation {
   zoneUTC: string;
   numberOfpeople: number;
   isDelete: boolean;
+  timeInSeconds:number;
+  progressBar:number;
+  timeWaitUserInSeconds:Date;
+
 }
 
 export interface reservationResponse {
