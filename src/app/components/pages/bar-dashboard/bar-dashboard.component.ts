@@ -59,7 +59,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     this.websocketService.closeConnection();
 
     // Object.values(this.reservationsListUnconfirm).forEach((reservation) => {
-    //   this.progressBarIntervals[reservation.code] = interval(1000).subscribe(() => {
+    //   this.progressBarIntervals[reservation.code] = interval(2000).subscribe(() => {
         
     //       this.progressBarIntervals[reservation.code].unsubscribe(); // Detén la secuencia cuando llega al 100%
         
@@ -81,16 +81,15 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
 
           if (reserva.confirmated === true) {
             this.reservationsListConfirm[reserva.code] = reservaAux;
-            console.log(this.reservationsListConfirm);
             
           } else {
             this.reservationsListUnconfirm[reserva.code] = reservaAux;
-            console.log(this.reservationsListUnconfirm)
           }
+
+          this.subscribeToProgressBar(reservaAux);
         }
         this.updateConfirm();
         this.updateUnconfirm();
-        //filtrar por confirm y no confirm 
       },
       error: (error) => {
         console.error('Error al obtener la lista de reservaciones:', error);
@@ -114,19 +113,15 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     this.subscription = this.websocketService.getMessages().subscribe(
      {
       next: (response) => {
-        console.log(response);
+      
+        let reservaAux:Reservation = this.CompleteList(response,response.createDate)
 
-        // const fecha1 = new Date(response.timeWaitUserInSeconds);
-        // const fecha2 = new Date(response.createDate);
-        // this.reservationsListUnconfirm[response.code] = response;
-        // this.reservationsListUnconfirm[response.code].timeInSeconds= (fecha1.getTime()-fecha2.getTime())/1000;
-        // this.reservationsListUnconfirm[response.code].progressBar=0;
-        // console.log(this.reservationsListUnconfirm[response.code])
-        // this.assignTimeConfirm();
-        this.reservationsListUnconfirm[response.code] = response;
+        this.reservationsListUnconfirm[response.code] = reservaAux;
+        this.subscribeToProgressBar(reservaAux);
         this.updateConfirm();
         this.updateUnconfirm();
         this.totalReservations++;
+
       },
       error: (error) => {
         console.error('Error al obtener la lista de reservaciones:', error);
@@ -176,7 +171,8 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     
     let newConfirm:Reservation;
     newConfirm=this.reservationsListUnconfirm[code];
-
+    // newConfirm.isChecked=false;
+    
     const query = {
       bar: {
         id: this.barId
@@ -231,20 +227,31 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
 
     const inputElement = event.target as HTMLInputElement;
     const textoInput = inputElement.value;
-    if(textoInput.trim() === ''){
-      
-      console.log("reserva no encontrada");
-      this.reservationsListUnconfirm = { ...this.reservationsListUnconfirmAux };
     
-    }else{
-      
-      this.reservationsListUnconfirmAux = { ...this.reservationsListUnconfirm };
-      this.reservationsListUnconfirm={};
-      this.reservationsListUnconfirm[textoInput] =this.reservationsListUnconfirmAux[textoInput];
-      
-      console.log(this.reservationsListUnconfirm);
-      console.log(this.reservationsListUnconfirmAux);
-    }
+      if (!(Object.keys(this.reservationsListUnconfirmAux).length === 0)) {
+        this.reservationsListUnconfirm={};
+        this.reservationsListUnconfirm = { ...this.reservationsListUnconfirmAux };       
+        this.reservationsListUnconfirmAux={};
+      }else if(!(Object.keys(this.reservationsListConfirmAux).length === 0)){
+        this.reservationsListConfirm={};
+        this.reservationsListConfirm = { ...this.reservationsListConfirmAux };
+        this.reservationsListConfirmAux={};
+      }
+     
+      if (this.reservationsListUnconfirm.hasOwnProperty(textoInput) ) {
+        this.reservationsListUnconfirmAux = { ...this.reservationsListUnconfirm };
+        this.reservationsListUnconfirm={};
+        this.reservationsListUnconfirm[textoInput] =this.reservationsListUnconfirmAux[textoInput];
+      }else if(this.reservationsListConfirm.hasOwnProperty(textoInput))
+      {
+        this.reservationsListConfirmAux = { ...this.reservationsListConfirm };
+        this.reservationsListConfirm={};
+        this.reservationsListConfirm[textoInput] =this.reservationsListConfirmAux[textoInput];
+      }else{
+        console.log("el codigo no existe")
+      }
+     
+    
   }
 
   public getIndicadores(barId:string, zoneUTC:string):void{
@@ -278,8 +285,9 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
       return Object.values(this.reservationsListUnconfirm);
   }
   
-  public getReservationsConfirm(): Reservation[] {
+  public getReservationsConfirm(): Reservation[] {    
       return Object.values(this.reservationsListConfirm);
+      
   }
 
   public getListSize(list:any): number {
@@ -293,16 +301,27 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   public assignTimeUnconfirm():void{
 
   }
-  // assignTimeConfirm(){
 
-  //   Object.values(this.reservationsListUnconfirm).forEach((reservation) => {
-  //     this.progressBarIntervals[reservation.code] = interval(1000).subscribe(() => {
-  //       if (reservation.progressBar >= 100) {
-  //         this.progressBarIntervals[reservation.code].unsubscribe(); // Detén la secuencia cuando llega al 100%
-  //       } else {
-  //         reservation.progressBar += 100 / reservation.timeInSeconds; // Incrementa el progreso proporcionalmente
-  //       }
-  //     });
-  //   });
-  // }
+  unSuscribeProgressBar(reservation: Reservation){
+    if (this.progressBarIntervals[reservation.code]) {
+      this.progressBarIntervals[reservation.code].unsubscribe();
+      delete this.progressBarIntervals[reservation.code];
+    }
+  }
+
+  
+  subscribeToProgressBar(reservation: Reservation): void {
+    
+    this.unSuscribeProgressBar(reservation);
+  
+    this.progressBarIntervals[reservation.code] = interval(5000).subscribe(() => {
+      if (reservation.progressBar >= 100) {
+        this.deleteReservation(reservation._id,reservation.code);
+        this.progressBarIntervals[reservation.code].unsubscribe();
+      } else {
+        reservation.progressBar += (100 * 5) / reservation.timeInSeconds; 
+      }
+    });
+  }
+  
 }

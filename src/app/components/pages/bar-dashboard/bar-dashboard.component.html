@@ -1,3 +1,4 @@
+
 <div class="bar-dashboard">   
     <div class="header">
         <div class="hexagon">
@@ -42,36 +43,37 @@
 
         <div class="form-group">
             <span class="code">Codigo</span>
-            <input class="form-field" type="text" (change)="onSearch($event)">
+            <input class="form-field" type="text" (input)="onSearch($event)">
         </div>
         <div class="main-reservation">
             <div class="card">  
                 <cdk-virtual-scroll-viewport itemSize="40" class="virtual-scroll-container">
-                    <ng-container  *cdkVirtualFor="let reserva of getReservationsUnconfirm(); let i = index">
+                    <ng-container  *cdkVirtualFor="let reserva of getReservationsUnconfirm();  let i = index ">
                       <div class="reservation" [ngClass]="{ 'first-reservation': i === 0 }">
-                        <div class="label">            
-                            <div class="checkbox-wrapper-31">
-                                <input type="checkbox" (change)="onConfirmBar(reserva._id,reserva.code)" [checked]="reserva.isChecked"/>
-                                <svg  viewBox="0 0 35.6 35.6">
-                                  <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
-                                  <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
-                                  <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
-                                </svg>
-                              </div>
-                             <label > Nueva reserva {{reserva.code}} </label>
-                        </div>
-                        <div  class="buttons">
-                            <button  class="reservation-button" (click)="editReservation()">
-                                <mat-icon>edit</mat-icon>                        
-                            </button>
+                            <div class="label">            
+                                <div class="checkbox-wrapper-31">
+                                    <input type="checkbox" name="{{reserva._id}}" id="{{reserva._id}}" (change)="onConfirmBar(reserva._id,reserva.code)" [checked]="reserva.isChecked"/>
+                                    
+                                    <svg  viewBox="0 0 35.6 35.6">
+                                    <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
+                                    <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                                    <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                                    </svg>
+                                </div>
+                                <label > Nueva reserva {{reserva.code}} </label>
+                            </div>
+                            <div  class="buttons">
+                                <button  class="reservation-button" (click)="editReservation()">
+                                    <mat-icon>edit</mat-icon>                        
+                                </button>
+                                
+                                <button class="reservation-button" (click)="deleteReservation(reserva._id,reserva.code)">
+                                    <mat-icon>delete_outline</mat-icon>
+                                </button> 
+                            </div>
                             
-                            <button class="reservation-button" (click)="deleteReservation(reserva._id,reserva.code)">
-                                <mat-icon>delete_outline</mat-icon>
-                            </button> 
-                        </div>
-                          
                       </div>
-                      <mat-progress-bar mode="determinate" [value]="reserva.progressBar" ></mat-progress-bar>
+                     <mat-progress-bar class="progressBar" mode="determinate" [value]="reserva.progressBar" ></mat-progress-bar>
                     </ng-container>
                   </cdk-virtual-scroll-viewport>
                                              
@@ -99,7 +101,7 @@
                                 </svg>
                               </div>
                               
-                        <label class="label1">  Reserva de {{reserva.code}} </label>
+                        <label class="label1">  Reserva de {{reserva.isChecked}} </label>
                         </div>
                         <div  class="buttons">
                             <button  class="reservation-button" (click)="editReservation()">
@@ -112,6 +114,7 @@
                         </div>  
                         
                     </div>
+                    <mat-progress-bar mode="determinate" [value]="reserva.progressBar" ></mat-progress-bar>
                 </ng-container>
                 </cdk-virtual-scroll-viewport>
                 <div class="box confirm">
