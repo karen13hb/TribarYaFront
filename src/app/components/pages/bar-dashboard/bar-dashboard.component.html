@@ -51,7 +51,7 @@
                       <div class="reservation" [ngClass]="{ 'first-reservation': i === 0 }">
                         <div class="label">            
                             <div class="checkbox-wrapper-31">
-                                <input type="checkbox" (change)="onConfirmBar(reserva._id,reserva.code)" />
+                                <input type="checkbox" (change)="onConfirmBar(reserva._id,reserva.code)" [checked]="reserva.isChecked"/>
                                 <svg  viewBox="0 0 35.6 35.6">
                                   <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
                                   <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>

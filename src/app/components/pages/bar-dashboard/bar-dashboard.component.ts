@@ -14,7 +14,9 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   ejemplo:string ="ejemplo"
   numberejm:number =10
 
-  public barId = '64cda4f1cffecc0eedad0387';
+  public barId = '64d46a8cc945490a3f29da0c';
+  public username='karen';
+  public zoneUTC='America/Bogota';
   private subscription: Subscription;
   progressBarIntervals: { [code: string]: Subscription } = {};
 
@@ -50,7 +52,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   ngOnInit() {  
     this.connectToSocketReservation();
     this.getReservationsList();
-    this.getIndicadores(this.barId);
+    this.getIndicadores(this.barId,this.zoneUTC);
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
@@ -71,11 +73,19 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     this.reservationsService.getReservationsList(this.barId).subscribe({
       next: (response) => {
 
+        const timeActual = response.timeActual;
+
         for (const reserva of response.reservations) {
+
+          let reservaAux:Reservation = this.CompleteList(reserva,timeActual)
+
           if (reserva.confirmated === true) {
-            this.reservationsListConfirm[reserva.code] = reserva;
+            this.reservationsListConfirm[reserva.code] = reservaAux;
+            console.log(this.reservationsListConfirm);
+            
           } else {
-            this.reservationsListUnconfirm[reserva.code] = reserva;
+            this.reservationsListUnconfirm[reserva.code] = reservaAux;
+            console.log(this.reservationsListUnconfirm)
           }
         }
         this.updateConfirm();
@@ -89,8 +99,18 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     
   }
 
+  public CompleteList(reserva:Reservation, timeActual:any):Reservation{
+    const fecha1 = new Date(reserva.timeWaitUserInSeconds);
+    const fecha2 = new Date(timeActual); 
+    reserva.timeInSeconds= (fecha1.getTime()-fecha2.getTime())/1000;
+    reserva.progressBar=0;
+    reserva.isChecked=false;  
+    
+    return reserva
+}
+
   public connectToSocketReservation(): void{
-    this.websocketService.connect(this.barId);
+    this.websocketService.connect(this.barId,this.username);
     this.subscription = this.websocketService.getMessages().subscribe(
      {
       next: (response) => {
@@ -115,6 +135,8 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     );
 
   }
+
+
 
  
   public editReservation():void{
@@ -225,10 +247,8 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     }
   }
 
-  public getIndicadores(barId:string):void{
-    this.reservationsService.getIndicadores(barId);
-
-    this.reservationsService.getIndicadores(barId)
+  public getIndicadores(barId:string, zoneUTC:string):void{
+    this.reservationsService.getIndicadores(barId,zoneUTC)
     .subscribe({
       next: (response) => {
         this.totalReservations= response.total;

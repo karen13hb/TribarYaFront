@@ -16,8 +16,8 @@ export class WebsocketReservationService implements OnDestroy {
   constructor() { }
 
 
-  public connect(bar: string) {
-    this.socket = io(environment.apiUrl, { query: { barId: bar }});
+  public connect(bar: string,nameUser: string) {
+    this.socket = io(environment.apiUrl, { query: { barId: bar,nameUser:nameUser }});
 
     this.socket.on('notificationBar', (respuesta: any) => {
       this.messagesSubject.next(respuesta);

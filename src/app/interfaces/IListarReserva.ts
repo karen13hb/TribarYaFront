@@ -11,6 +11,7 @@ export interface Reservation {
   timeInSeconds:number;
   progressBar:number;
   timeWaitUserInSeconds:Date;
+  isChecked: boolean;
 
 }
 

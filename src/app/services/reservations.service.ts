@@ -17,7 +17,7 @@ export class ReservationsService {
    }
 
    getReservationsList(barId:string){
-    return this.http.get<reservationResponse>(`${this.ApiURL}/reservation/listar-reservaciones/${barId}`).pipe(
+    return this.http.get<reservationResponse>(`${this.ApiURL}/reservation/listar-reservaciones?id=${barId}&zoneUTC=America/Bogota`).pipe(
 			retry(2)
 		);
    }
@@ -46,8 +46,8 @@ export class ReservationsService {
       );
    }
 
-   getIndicadores(barId:string){
-    return this.http.get<Iindicadores>(`${this.ApiURL}/reservation/indicadores/${barId}`).pipe(
+   getIndicadores(barId:string,zoneUTC:String){
+    return this.http.get<Iindicadores>(`${this.ApiURL}/reservation/indicadores?id=${barId}&zoneUTC=${zoneUTC}`,).pipe(
 			retry(2)
 		);
    }
