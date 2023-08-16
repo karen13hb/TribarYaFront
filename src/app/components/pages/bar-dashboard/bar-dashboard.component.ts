@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription, interval } from 'rxjs';
 import { Reservation } from 'src/app/interfaces/IListarReserva';
 import { ReservationsService } from 'src/app/services/reservations.service';
@@ -32,10 +33,13 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   totalReservations:number;
   totalConfirmArrive:number;
 
+  showInfo=true;
+
 
 
   constructor(private websocketService: WebsocketReservationService, 
-              private reservationsService:ReservationsService) 
+              private reservationsService:ReservationsService,
+              private router: Router,) 
   {
     this.subscription = new Subscription();
     this.reservationsListUnconfirm ={};
@@ -49,22 +53,28 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
 
   }
 
-  ngOnInit() {  
-    this.connectToSocketReservation();
-    this.getReservationsList();
-    this.getIndicadores(this.barId,this.zoneUTC);
+  async ngOnInit() {  
+    this.connectToSocketReservation();   
+    this.validateSocket();
+    
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.websocketService.closeConnection();
+  }
 
-    // Object.values(this.reservationsListUnconfirm).forEach((reservation) => {
-    //   this.progressBarIntervals[reservation.code] = interval(2000).subscribe(() => {
-        
-    //       this.progressBarIntervals[reservation.code].unsubscribe(); // Detén la secuencia cuando llega al 100%
-        
-    //   });
-    // });
+  public validateSocket():void{ 
+    debugger
+    console.log(this.showInfo)
+    if(this.showInfo){
+      this.getReservationsList();
+      this.getIndicadores(this.barId,this.zoneUTC);
+    }else{
+      alert("no se puede conectar")
+      this.subscription.unsubscribe();
+      this.websocketService.closeConnection();
+      this.router.navigate(["login"]);
+    }
   }
 
 
@@ -87,6 +97,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
           }
 
           this.subscribeToProgressBar(reservaAux);
+          console.log(reserva.timeInSeconds)
         }
         this.updateConfirm();
         this.updateUnconfirm();
@@ -99,38 +110,74 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   }
 
   public CompleteList(reserva:Reservation, timeActual:any):Reservation{
-    const fecha1 = new Date(reserva.timeWaitUserInSeconds);
-    const fecha2 = new Date(timeActual); 
-    reserva.timeInSeconds= (fecha1.getTime()-fecha2.getTime())/1000;
+     
+    reserva.timeInSeconds= this.assignTimeConfirm(reserva,timeActual);
     reserva.progressBar=0;
     reserva.isChecked=false;  
     
     return reserva
-}
-
+  }
+  public assignTimeConfirm(reserva:Reservation,timeActual:any):number{
+    let fecha1:Date 
+    let fecha2:Date
+    if(reserva.confirmated){       
+       fecha1 = new Date(reserva.expireAt);
+       fecha2 = new Date(timeActual);
+    }else{
+      fecha1 = new Date(reserva.timeWaitUserInSeconds);
+      fecha2 = new Date(timeActual);
+    }
+    const timeInSeconds= (fecha1.getTime()-fecha2.getTime())/1000;
+    return timeInSeconds
+   
+  
+  }
+ 
   public connectToSocketReservation(): void{
     this.websocketService.connect(this.barId,this.username);
     this.subscription = this.websocketService.getMessages().subscribe(
      {
       next: (response) => {
       
-        let reservaAux:Reservation = this.CompleteList(response,response.createDate)
-
+        let reservaAux: Reservation = this.CompleteList(response, response.createDate);
         this.reservationsListUnconfirm[response.code] = reservaAux;
         this.subscribeToProgressBar(reservaAux);
         this.updateConfirm();
         this.updateUnconfirm();
         this.totalReservations++;
 
-      },
-      error: (error) => {
-        console.error('Error al obtener la lista de reservaciones:', error);
       }
      }
     );
 
   }
 
+
+// async connectToSocketReservation(): Promise<void> {
+//   return new Promise<void>((resolve) => {
+//     this.websocketService.connect(this.barId, this.username);
+//     this.subscription = this.websocketService.getMessages().subscribe({
+//       next: (response) => {        
+//         if(response){
+//           if(!response.code){
+//             this.showInfo=false
+//             console.log(this.showInfo)
+//           }
+          
+//         }else{
+//           let reservaAux: Reservation = this.CompleteList(response, response.createDate);
+//           this.reservationsListUnconfirm[response.code] = reservaAux;
+//           this.subscribeToProgressBar(reservaAux);
+//           this.updateConfirm();
+//           this.updateUnconfirm();
+//           this.totalReservations++;
+          
+//         }
+//         resolve();
+//       },
+//     });
+//   });
+// }
 
 
  
@@ -171,6 +218,12 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     
     let newConfirm:Reservation;
     newConfirm=this.reservationsListUnconfirm[code];
+    console.log(newConfirm.timeInSeconds)
+    newConfirm.confirmated=true
+    newConfirm.progressBar=0;
+    newConfirm.timeInSeconds=this.assignTimeConfirm(newConfirm,newConfirm.createDate)
+    console.log(newConfirm.timeInSeconds)
+    this.subscribeToProgressBar(newConfirm)
     // newConfirm.isChecked=false;
     
     const query = {
@@ -188,7 +241,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
         setTimeout(() => {
           this.reservationsListConfirm[code] = newConfirm;
           this.updateListUnconfirm(code);
-      
+          this.subscribeToProgressBar(this.reservationsListConfirm[code])      
           this.updateConfirm();
           this.updateUnconfirm();
         }, 500);
@@ -199,6 +252,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
 
   }
 
+ 
   public onConfirmArrive(idReserva:string,code:string):void{
     const query = {
       bar: {
@@ -298,11 +352,12 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
 
   }
 
-  public assignTimeUnconfirm():void{
+  
 
-  }
+  
 
-  unSuscribeProgressBar(reservation: Reservation){
+
+  public unSuscribeProgressBar(reservation: Reservation):void{
     if (this.progressBarIntervals[reservation.code]) {
       this.progressBarIntervals[reservation.code].unsubscribe();
       delete this.progressBarIntervals[reservation.code];
@@ -310,7 +365,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   }
 
   
-  subscribeToProgressBar(reservation: Reservation): void {
+  public subscribeToProgressBar(reservation: Reservation): void {
     
     this.unSuscribeProgressBar(reservation);
   

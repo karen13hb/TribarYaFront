@@ -17,6 +17,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 const appRoutes: Routes=[
   {
     path:'', component:BarDashboardComponent
+  },
+  {
+    path:'login',component:LoginComponent
   }
   
 ];

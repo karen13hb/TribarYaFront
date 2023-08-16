@@ -213,11 +213,11 @@ font-size: 3rem;
 
 
   
-  /* ::ng-deep .mdc-linear-progress__bar {
-    
-    width: 80%;
-    border-radius: 10px;
-  } */
+  ::ng-deep .mdc-linear-progress__bar.mdc-linear-progress__primary-bar {
+    /* Estilos personalizados aquí */
+    width: 90% ;
+    margin: 0% 5%
+  }
   
   .label {
     flex: 1;
