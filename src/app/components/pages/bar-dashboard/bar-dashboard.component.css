@@ -1,44 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald&family=Signika+Negative:wght@300&display=swap');
+
 .bar-dashboard{
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-.header {
-    
-    position: relative;
+.header {    
     width: 100%;
-    height: 7%;
+    height: 7%; 
     background-color: #110D20;
-    display: flex; 
-    justify-content: flex-end; 
-    align-items: center;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;    
     font-weight: bolder;
     border-bottom: 4px solid #2E1F4D;
 }
-.hexagon {
-    position: relative;
-    width: 10%;
-    right: 37.5%;
-    margin-top: 4%;
-}
-.hexagon img {
-    width: 100%;
-    height: 100%;
+.header-left{
+  width: 45%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: row;
+  gap: 1%;
 }
 
-.text-overlay {
-    position: absolute;
-    top: 50%; 
-    left: 50%;
-    transform: translate(-50%, -50%); 
-    color: white; 
-    font-size: 1rem; 
+.hexagon{
+  width: 55%;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  
 }
+
+.hexagon img {  
+    width: 20%;
+    height: 200%;
+} 
 .bar-name {
-    color: white; 
-    margin-right: 1%; 
+    color: white;
 }
 
 .out-button{
@@ -47,7 +47,7 @@
     color: white;   
 }
 .out-button mat-icon{
-    font-size: 20px; /* Tamaño del ícono */
+    font-size: 20px;
     align-items: center;
     display: flex;    
     cursor: pointer;   
@@ -106,18 +106,18 @@
     height: 92%;
     padding-top: 3%;
 }
-.row-1{
+.one-row{
     display: flex;
     width: 95%;
     height: 22%;
     margin: 0% 2.5%;
 }
-.col-1,.col-2 {
+.one-col,.two-col {
     display: flex;    
     width: 50%;
     gap: 5%;        
 }
-.col-2{
+.two-col{
    justify-content: flex-end;
 }
 .main-button
@@ -179,7 +179,7 @@ font-size: 3rem;
     align-items: flex-end;    
 }
 
-.card{
+.card-reservation{
     background-color: #B3BBCF;
     width: 45%;
     height: 70%;
@@ -208,6 +208,7 @@ font-size: 3rem;
     align-items: center;
     gap: 2%;
     margin: 2% 5% 0% ;
+    width: 90%;
 
   }
 
@@ -220,7 +221,7 @@ font-size: 3rem;
   }
   
   .label {
-    flex: 1;
+    width: 50%;
     margin-left: 2%;
     display: flex;
     align-items: center;
@@ -228,23 +229,17 @@ font-size: 3rem;
   }
   
   .buttons {
+    width: 50%;
     display: flex;
     gap: 5px;
     align-items: center;
   }
-
-
-
-   /* .card::-webkit-scrollbar-track {
-    background-color: transparent; 
-    border-radius: 0px 10px 10px 0px;
-  }  */
   
-  .card ::-webkit-scrollbar {
+  .card-reservation ::-webkit-scrollbar {
     width: 0.5em; /* Ancho de la barra de desplazamiento */
   }
   
-  .card ::-webkit-scrollbar-thumb {
+  .card-reservation ::-webkit-scrollbar-thumb {
     margin-top:5% ;
     background-color: #6C757D; /* Color del control deslizante */
     border-radius: 5px;
@@ -254,6 +249,7 @@ font-size: 3rem;
     display: flex;
     gap: 5px;
     align-items: center;
+    justify-content: flex-end;
   }
 
 .reservation-button{
@@ -267,6 +263,18 @@ font-size: 3rem;
     align-items: center;
     display: flex;    
     cursor: pointer;   
+}
+.people{
+  display: flex;
+  flex-direction: row;
+  width: 7%;
+  align-items: center;
+  margin-right: 2%;
+  font-weight: bold;
+}
+.people img{
+  width: 100%;
+  height: 5%;
 }
 .transparent-card{
     border-radius: 10px;
@@ -306,7 +314,7 @@ font-size: 3rem;
   .checkbox-wrapper-31 {
     position: relative;
     display: inline-block;
-    width: 5%;
+    width: 8%;
     display: flex;
   }
   .checkbox-wrapper-31 .background {
@@ -356,8 +364,6 @@ font-size: 3rem;
   .checkbox-wrapper-31 input[type=checkbox]:checked + svg .check {
     stroke-dashoffset: 0;
   }
-  
-
     
 
 

@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { Reservation } from 'src/app/interfaces/IListarReserva';
+import { Reservation, reservationResponse } from 'src/app/interfaces/IListarReserva';
 import { BehaviorSubject, Observable, Subject, takeUntil } from 'rxjs';
 import { io } from "socket.io-client";
 import { environment } from 'src/environments/environment';
@@ -10,8 +10,10 @@ import { environment } from 'src/environments/environment';
 })
 export class WebsocketReservationService implements OnDestroy {
 
-  private messagesSubject: Subject<any> = new Subject<any>();
+  private messagesSubject: Subject<any> = new Subject<Reservation>();
+  private messagesError: Subject<any> = new Subject<Reservation>();
   private unsubscribe$: Subject<void> = new Subject<void>();
+  
   socket: any;
   constructor() { }
 
@@ -24,6 +26,9 @@ export class WebsocketReservationService implements OnDestroy {
       this.messagesSubject.next(respuesta);
     });
 
+    this.socket.on('notificationErrorBar', (respuesta: any) => {
+      this.messagesError.next(respuesta);
+    });
     
   }
 
@@ -35,6 +40,10 @@ export class WebsocketReservationService implements OnDestroy {
 
   getMessages() {
     return this.messagesSubject.asObservable().pipe(takeUntil(this.unsubscribe$));
+  }
+
+  getError(){
+    return this.messagesError.asObservable().pipe(takeUntil(this.unsubscribe$));
   }
 
   ngOnDestroy() {

@@ -1,10 +1,12 @@
-
+<!-- <button type="submit" [disabled]="false"
+              (click)="openDialog()">Generar reserva</button> -->
 <div class="bar-dashboard">   
     <div class="header">
         <div class="hexagon">
             <img src="assets\images\hexagonal.png" alt="logo tribar">
-            <div class="text-overlay">TRIBARYA</div>
         </div>
+
+        <div class="header-left">
         <div class="bar-name">
             <p>BarName</p>
         </div>
@@ -13,22 +15,23 @@
                 <mat-icon>logout</mat-icon>                        
             </button>
         </div>
+        </div>
     </div>
     <img src="assets\images\hojaI.png" alt="hojaI" class="hoja left">
     <img src="assets\images\hojaD.png" alt="hojaD" class="hoja right">
 
     <div class="main">
         
-        <div class="row-1">
-            <div class="col-1">            
+        <div class="one-row">
+            <div class="one-col">            
                 <button type="submit" [disabled]="false"
-                class="main-button">Generar reserva</button>
+                class="main-button"  (click)="openDialog()">Generar reserva</button>
 
                 <button type="submit" [disabled]="false"
                 class="main-button">Gestionar evento</button>            
             </div>
 
-            <div class="col-2"> 
+            <div class="two-col"> 
                 <div class="box-total ">
                     <p class="value">{{totalReservations}}</p>
                     <p class="title">Total</p>
@@ -46,13 +49,13 @@
             <input class="form-field" type="text" (input)="onSearch($event)">
         </div>
         <div class="main-reservation">
-            <div class="card">  
+            <div class="card-reservation">  
                 <cdk-virtual-scroll-viewport itemSize="40" class="virtual-scroll-container">
                     <ng-container  *cdkVirtualFor="let reserva of getReservationsUnconfirm();  let i = index ">
-                      <div class="reservation" [ngClass]="{ 'first-reservation': i === 0 }">
+                      <div class="reservation" >
                             <div class="label">            
                                 <div class="checkbox-wrapper-31">
-                                    <input type="checkbox" name="{{reserva._id}}" id="{{reserva._id}}" (change)="onConfirmBar(reserva._id,reserva.code)" [checked]="reserva.isChecked"/>
+                                    <input type="checkbox"  id="{{reserva._id}}" (change)="onConfirmBar(reserva._id,reserva.code)" [(ngModel)]="reserva.isChecked"/>
                                     
                                     <svg  viewBox="0 0 35.6 35.6">
                                     <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
@@ -70,6 +73,13 @@
                                 <button class="reservation-button" (click)="deleteReservation(reserva._id,reserva.code)">
                                     <mat-icon>delete_outline</mat-icon>
                                 </button> 
+                                
+                                <div class="reservation-button people" >
+                                    <p>{{reserva.numberOfpeople}}   </p>
+                                    
+                                    <img src="assets\images\grupo.png" alt="Eliminar reserva"  >
+                                    
+                                </div>
                             </div>
                             
                       </div>
@@ -86,14 +96,14 @@
 
             <div class="transparent-card"></div>
 
-            <div class="card">
-                <!--confirmadas-->
+            <div class="card-reservation">
+               
                 <cdk-virtual-scroll-viewport itemSize="40" class="virtual-scroll-container">
                 <ng-container  *cdkVirtualFor="let reserva of getReservationsConfirm(); let i = index" >
-                    <div class="reservation" [ngClass]="{ 'first-reservation': i === 0 }">
+                    <div class="reservation">
                         <div class="label">
                             <div class="checkbox-wrapper-31">
-                                <input type="checkbox" (change)="onConfirmArrive(reserva._id,reserva.code)"/>
+                                <input type="checkbox" (change)="onConfirmArrive(reserva._id,reserva.code)" [(ngModel)]="reserva.isChecked "/>
                                 <svg  viewBox="0 0 35.6 35.6">
                                   <circle class="background" cx="17.8" cy="17.8" r="17.8"></circle>
                                   <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
@@ -110,7 +120,14 @@
                             
                             <button class="reservation-button" (click)="deleteReservation(reserva._id,reserva.code)">
                                 <mat-icon>delete_outline</mat-icon>
-                            </button>                       
+                            </button> 
+                            
+                            <div class="reservation-button people" >
+                                <p>{{reserva.numberOfpeople}}   </p>
+                                
+                                <img src="assets\images\grupo.png" alt="Eliminar reserva"  >
+                                
+                            </div>
                         </div>  
                         
                     </div>
@@ -128,7 +145,8 @@
 
     </div>
 
-</div>
+</div> 
+
 
 
 

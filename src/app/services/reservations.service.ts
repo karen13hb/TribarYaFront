@@ -4,6 +4,7 @@ import { retry } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { reservationResponse } from '../interfaces/IListarReserva';
 import { Iindicadores } from '../interfaces/IIndicadores';
+import { ReservationDto } from '../interfaces/ReservationDto';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +52,12 @@ export class ReservationsService {
 			retry(2)
 		);
    }
+
+   createReservation(reserva: ReservationDto){
+    return this.http.post<void>(`${this.ApiURL}/reservation`, reserva).pipe(
+      retry(2)
+      );
+   }
+
 
 }

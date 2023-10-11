@@ -1,0 +1,115 @@
+
+.title-dialog{
+  background-color: #2E1F4D;
+  font-size: x-large;
+  font-weight: 500;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3%;
+}
+.content-dialog{
+  background-color: #D9D9D9;
+}
+
+.form-group{
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5%;
+}
+
+.labels{
+  display: flex;
+  justify-content: space-between;
+  margin: 5% 0%;
+}
+
+.col-one,.col-two {
+  flex: 1;
+}
+.col-one{
+  margin-right: 10%;
+}
+.form-group label{
+  white-space: nowrap;
+  color: black;
+}
+.form-control{
+  height: 30px;
+  border-radius: 5px;
+  border-style: none;
+}
+.form-control:focus {
+  outline: none;
+}
+.codeReservation{
+  border-radius: 5px 0px 0px 5px;
+}
+.input-group{
+  display: flex;
+}
+.input-group input{
+  width: 80%;
+}
+.input-group input:disabled{
+  background-color: #B3BBCF;
+  color: black;
+}
+
+.search-btn{
+  background-color: transparent;
+  border-style: none;
+  color: black;  
+}
+.search-btn mat-icon{
+
+    font-size: 25px;
+    align-items: center;
+    display: flex;    
+    cursor: pointer; 
+}
+
+
+.main-button
+{
+    border-radius: 5px;
+    background: #6C757D;
+    color:white;
+    font-size: 1rem;
+    font-weight: 300;
+    cursor: pointer;    
+    border-style: none; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    width: 30%; 
+    margin: 0% auto;      
+}
+
+.main-button:not(:disabled):hover{
+    background-color: #7f878f;
+    box-shadow: inset 0px 0px 1px 3px #a4a6a8;
+    font-size: 1.1rem;
+    transition: all 0.5s ease;
+    
+}
+
+.main-button:disabled{
+  background-color: #AEAEAE;
+  color: #6C757D;
+}
+
+
+input,select{
+  padding: 0 6%;
+}
+.input-group-append{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#B3BBCF ;
+  border-radius: 0px 5px 5px 0px;
+  width: 20%;
+}

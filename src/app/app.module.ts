@@ -12,6 +12,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { FormsModule } from '@angular/forms';
+import { ModalGenerarReservaComponent } from './shared/Modals/modal-generar-reserva/modal-generar-reserva.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms'; 
 
 
 const appRoutes: Routes=[
@@ -20,7 +25,10 @@ const appRoutes: Routes=[
   },
   {
     path:'login',component:LoginComponent
-  }
+  },
+  {
+    path:'modal',component:ModalGenerarReservaComponent
+  },
   
 ];
 
@@ -28,7 +36,9 @@ const appRoutes: Routes=[
   declarations: [
     AppComponent,
     BarDashboardComponent,
-    LoginComponent
+    LoginComponent,
+    ModalGenerarReservaComponent
+   
   ],
   imports: [
     BrowserModule,
@@ -39,9 +49,18 @@ const appRoutes: Routes=[
     FontAwesomeModule,
     HttpClientModule,
     ScrollingModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    FormsModule,
+    ScrollingModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule
+    
   ],
+  
   providers: [],
-  bootstrap: [AppComponent]
+  
+  bootstrap: [AppComponent],
+  
 })
 export class AppModule { }
