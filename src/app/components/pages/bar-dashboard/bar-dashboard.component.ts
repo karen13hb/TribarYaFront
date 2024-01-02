@@ -4,7 +4,7 @@ import { Subscription, interval,} from 'rxjs';
 import { Reservation } from 'src/app/interfaces/IListarReserva';
 import { ReservationsService } from 'src/app/services/reservations.service';
 import { WebsocketReservationService } from 'src/app/services/websocket-reservation.service';
-import {MatDialog, MatDialogConfig, MatDialogModule} from '@angular/material/dialog';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalGenerarReservaComponent } from 'src/app/shared/Modals/modal-generar-reserva/modal-generar-reserva.component';
 
 @Component({
@@ -17,9 +17,11 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   ejemplo:string ="ejemplo"
   numberejm:number =10
 
-  public barId = '64e43685997085e38d941a8c';
+
+  public barId = '658cdff98f8bb0fc19305175';
   public username='karen';
   public zoneUTC='America/Bogota';
+  
   private subscription: Subscription;
   progressBarIntervals: { [code: string]: Subscription } = {};
 
@@ -42,7 +44,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   constructor(private websocketService: WebsocketReservationService, 
               private reservationsService:ReservationsService,
               private router: Router,
-              public dialog: MatDialog) 
+              private modalService: NgbModal) 
   {
     this.subscription = new Subscription();
     this.reservationsListUnconfirm ={};
@@ -91,22 +93,7 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
     }
   }
 
-
-  //  public validateSocket():void{
-  //   this.websocketService.connect(this.barId,this.username);
-    
-  //   this.websocketService.getError().subscribe({
-  //     next:(response)=>{
-  //       console.log(response)
-  //       this.showInfo=false
-  //     }
-  //   });
-    
-  // }
-
-
   public connectToSocketReservation(): void{
-    //this.websocketService.connect(this.barId,this.username);
 
     this.subscription = this.websocketService.getMessages().subscribe(
      {
@@ -387,13 +374,14 @@ export class BarDashboardComponent implements OnInit,OnDestroy {
   }
 
   openDialog() {
-    let dc = new MatDialogConfig();
-    dc.autoFocus = true;
-    dc.hasBackdrop = true;
-    dc.width = '50%'; 
-    
-    const dialogRef = this.dialog.open(ModalGenerarReservaComponent, dc);
-    dialogRef.componentInstance.barId=this.barId
+    const modalRef = this.modalService.open(ModalGenerarReservaComponent,{
+      centered: true,
+      backdropClass: "light-blue-backdrop",
+      backdrop: "static",
+      size: 'lg'
+    });
+    modalRef.componentInstance.barId = this.barId;
+    modalRef.componentInstance.zoneUTC =this.zoneUTC
   }
   
 }

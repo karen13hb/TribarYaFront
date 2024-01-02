@@ -1,11 +1,15 @@
-<div class="main-reservar">
-<h1 class="title-dialog" >Generar reserva</h1>
-<div class="content-dialog" mat-dialog-content>
-  
+
+
+<div class="modal-header d-flex align-items-center justify-content-center">
+  <h4 class="modal-title">Generar reserva</h4>
+ 
+</div>
+<div class="modal-body">
   <form [formGroup]="formGenerarReserva" (ngSubmit)="crearReserva()">
 
-    <div class="labels">
-        <div class="col-one">
+    <div class="row">
+      <div class="col-12 col-md-4 " >
+        <div class="mb-3"> 
           <div class="form-group">
             <label for="listaCuando">¿Cuándo?</label>
             <select id="listaCuando" class="form-control"  formControlName="listaCuando" [(ngModel)]="selectedListaCuando" (change)="onChange()">
@@ -14,72 +18,77 @@
               <option value="later">Mas tarde</option>    
             </select>
           </div>
-      
-          <div class="form-group" *ngIf="showInput">
-            <label for="fechaReserva">Fecha de reserva</label>
-            <input type="date" id="fechaReserva" class="form-control" formControlName="fechaReserva" placeholder="DD/MM/YYYY" >
-          </div>
-
-          <div class="form-group" *ngIf="showInput">
-            <label for="horaReserva">Hora</label>
-            <input type="time" id="horaReserva" class="form-control" formControlName="horaReserva" >
-          </div>
-      
-          
-          <div class="form-group">
-            <label for="numPersonas">Número de Personas</label>
-            <input type="number" id="numPersonas" class="form-control" formControlName="numPersonas">
-          <div id="mensaje"
-            *ngIf="!formGenerarReserva?.get('numPersonas')?.valid">
-                      <p class="small text-danger mt-1 position-absolute font-weight-bold" text-right>Solo se permiten
-                        valores numéricos</p>
-            </div> 
-          </div>
-          
         </div>
-        <div class="col-two">
-
-          <div class="form-group">
-            <label for="tiempoEspera">Tiempo de espera</label>
-            <input type="number" id="tiempoEspera" class="form-control" formControlName="tiempoEspera" placeholder="tiempo en minutos">
-          </div>
-
-          <div class="form-group">
-            <label for="numCelular">Número de Celular</label>
-            <input type="tel" id="numCelular" class="form-control" formControlName="numCelular">
-          </div>
-      
-          <div class="form-group">
-            <label for="codigoReserva">Codigo de reseva</label>
-            <div class="input-group">
-              <input 
-                  type="text" 
-                  id="codigoReserva" 
-                  class="form-control codeReservation" 
-                  formControlName="codigoReserva" 
-                  placeholder="Generar codigo"
-                  [(ngModel)]="code"
-                 >
-              <div class="input-group-append">
-                <button type="button" class="search-btn" (click)="performSearch()" [disabled]="disabled">
-                  <mat-icon>change_circle</mat-icon>
-                </button>
-              </div>
+      </div>
+      <div class="col-12 col-md-4"> 
+        <div class="form-group">
+          <label for="tiempoEspera">Tiempo de espera</label>
+          <input type="number" id="tiempoEspera" class="form-control" formControlName="tiempoEspera" placeholder="tiempo en minutos">
+        </div>
+      </div>
+      <div class="col-12 col-md-4"> 
+        <div class="form-group">
+          <label for="numPersonas">Número de Personas</label>
+          <input type="number" id="numPersonas" class="form-control" formControlName="numPersonas">
+        <!-- <div id="mensaje"
+          *ngIf="!formGenerarReserva?.get('numPersonas')?.valid">
+                    <p class="small text-danger mt-1 position-absolute font-weight-bold" text-right>Solo se permiten
+                      valores numéricos</p>
+          </div>  -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 col-md-4 " > 
+        <div class="form-group" *ngIf="showInput">
+          <label for="fechaReserva">Fecha de reserva</label>
+          <input type="date" id="fechaReserva" class="form-control" formControlName="fechaReserva" placeholder="DD/MM/YYYY" >
+        </div>
+      </div>
+      <div class="col-12 col-md-4"> 
+        <div class="form-group">
+          <label for="numCelular">Número de Celular</label>
+          <input type="tel" id="numCelular" class="form-control" >
+        </div>
+      </div>
+      <div class="col-12 col-md-4"> 
+        <div class="form-group">
+          <label for="codigoReserva">Codigo de reseva</label>
+          <div class="input-group mb-3">
+            <input 
+            type="text" 
+            id="codigoReserva" 
+            class="form-control codeReservation" 
+            formControlName="codigoReserva" 
+            placeholder="Generar codigo"
+            [(ngModel)]="code">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" (click)="performSearch()">
+                <mat-icon>change_circle</mat-icon></button>
             </div>
           </div>
-
-          
+      
         </div>
+
+      </div>
     </div>
+    <div class="row">
+      <div class="col-12 col-md-4 " >        
+        <div class="form-group" *ngIf="showInput">
+          <label for="horaReserva">Hora</label>
+          <input type="time" id="horaReserva" class="form-control" formControlName="horaReserva" >
+        </div>
+      </div>
+     
+    </div>
+
     
-    <button type="submit" class="main-button" [disabled]="!formGenerarReserva.valid" >Crear reserva</button>
+    <div class="d-grid gap-2 col-3 mx-auto">
+      <button type="submit" class="btn main-button" [disabled]="formGenerarReserva.valid">Crear reserva</button>
+    </div>
 
   </form>
- 
 </div>
-
-<div class="content-dialog" mat-dialog-actions align="center">
-  <button mat-button mat-dialog-close cdkFocusInitial>Cerrar</button>
-</div>
-
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cerrar</button>
 </div>

@@ -12,8 +12,14 @@
     font-family: 'Oswald', sans-serif;
     font-family: 'Signika Negative', sans-serif;
     background-image: url('assets/images/Fondo.png');
+    background-size: cover;
+    overflow-x: hidden;
   }
 
   html, body{
-    height: 100%;
+    width: 100%;
+    height: auto;
   } 
+p{
+  margin-bottom: 0;
+}
