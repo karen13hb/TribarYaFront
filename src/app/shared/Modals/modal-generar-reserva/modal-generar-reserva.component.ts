@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ReservationsService } from 'src/app/services/reservations.service';
 import { ReservationDto } from 'src/app/interfaces/ReservationDto';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DateTime } from 'luxon';
+import * as intlTelInput from 'intl-tel-input';
+
 
 
 @Component({
@@ -19,52 +21,83 @@ export class ModalGenerarReservaComponent implements OnInit{
   private isToday=false;
   public  formGenerarReserva: FormGroup ;
   public showInput:boolean=false;
-  public code=""
-  public selectedListaCuando: string = "default";
+
   private  segundos:number=60;
   public activeModal: NgbActiveModal;
 
   constructor(private formBuilder: FormBuilder,
 	private reservationsService:ReservationsService,
-	public activeModals: NgbActiveModal
+	public activeModals: NgbActiveModal,
+	private cdr: ChangeDetectorRef
 	){
 	this.activeModal = activeModals	
     this.formGenerarReserva = this.formBuilder.group({
-			listaCuando: [null, Validators.required],
+			listaCuando: new FormControl({value:'default',disabled:false}, [Validators.required]),
 			fechaReserva: [null],
 			horaReserva:[null],
 			tiempoEspera: new FormControl({value:null,disabled:false}, [Validators.required]),
 			numPersonas: new FormControl({value:null,disabled:false}, [Validators.required]),
-			numCelular: [null, Validators.required],
-			codigoReserva: new FormControl({value:null,disabled:false}, [Validators.required]),
+			numCelular:new FormControl({value:null,disabled:false}, [Validators.required]),
+			codigoReserva: new FormControl({value:null,disabled:true}, [Validators.required]),
+			phone: new FormControl({value:null,disabled:false}, [Validators.required]),
 		});
 
+		this.formGenerarReserva.get('listaCuando')?.valueChanges.subscribe(value => {
+			this.onChange(value);
+		});
+
+		  //console.log('Initial form values and status:', this.formGenerarReserva.value, this.formGenerarReserva.status);
   }
 
   ngOnInit() {   
-    
+    this.performSearch()
+
+	const inputElement = document.querySelector('#numCelular');
+
   }
 
-  onChange(){
-	if(this.selectedListaCuando =="later"){
+  public toggleformGenerarReserva():void{
+
+	const fechaReservaControl = this.formGenerarReserva.get('fechaReserva');
+    const horaReservaControl = this.formGenerarReserva.get('horaReserva');
+
+    if (this.isToday) {
+		fechaReservaControl?.clearValidators();
+		horaReservaControl?.clearValidators();
+		fechaReservaControl?.setValue(null);
+    	horaReservaControl?.setValue(null);
+    } else {
+	  fechaReservaControl?.setValidators([Validators.required]);
+      horaReservaControl?.setValidators([Validators.required]);
+    }
+  }
+  public onChange(value: string):void {
+
+	if(value =="later"){
 		this.showInput=true
 		this.isToday=false
-	}else if(this.selectedListaCuando =="now"){
+	}else if(value =="now"){
 		this.showInput=false
 		this.isToday=true
 	}else{
 		this.showInput=false
 		this.isToday=false
-	}	
-  }
-
-  performSearch() {
-	this.code= this.generarCodigo(this.cantidadDigitos);
-	//this.formGenerarReserva.get('codigoReserva')?.disable();
+	}
 	
+	this.toggleformGenerarReserva()
+	this.cdr.detectChanges();
   }
 
-  generarCodigo(length: number): string {
+  public performSearch():void {
+	const newCode = this.generarCodigo(this.cantidadDigitos);
+	const codigoReservaControl = this.formGenerarReserva.get('codigoReserva');
+    if (codigoReservaControl) {
+    
+      codigoReservaControl.setValue(newCode);
+    }
+  }
+
+  public generarCodigo(length: number): string {
 	const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 	let codigo = '';
   
@@ -76,7 +109,7 @@ export class ModalGenerarReservaComponent implements OnInit{
 	return codigo;
   }
 
-  covertInputToDto():ReservationDto{
+  public covertInputToDto():ReservationDto{
 	let timeToWait= this.formGenerarReserva.get('tiempoEspera')?.value
 	timeToWait = timeToWait*this.segundos;
 
@@ -99,7 +132,7 @@ export class ModalGenerarReservaComponent implements OnInit{
         bar: {
           id: this.barId
         },
-        code: this.code,
+        code: this.formGenerarReserva.get('codigoReserva'),
         timeWaitUserInSeconds: timeToWait,
         isToday: this.isToday,
         fecha_reserva: utcDate,
@@ -111,7 +144,7 @@ export class ModalGenerarReservaComponent implements OnInit{
 
   }
 
-  crearReserva(){
+  public crearReserva():void{
 
 	this.reservationsService.createReservation(this.covertInputToDto()).subscribe(
 		(response) => {		  

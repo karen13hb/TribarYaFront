@@ -1,3 +1,7 @@
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+
+
 .modal-header{
   background-color: #2E1F4D;
   font-size: x-large;
@@ -13,6 +17,7 @@
 {
     background: #6C757D;
     color:white;
+    margin: 10%;
        
 }
 
@@ -28,3 +33,4 @@
   background-color: #AEAEAE;
   color: #6C757D;
 }
+

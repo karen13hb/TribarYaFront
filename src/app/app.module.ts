@@ -17,6 +17,7 @@ import { ModalGenerarReservaComponent } from './shared/Modals/modal-generar-rese
 import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms'; 
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 
 
 const appRoutes: Routes=[
@@ -54,7 +55,8 @@ const appRoutes: Routes=[
     ScrollingModule,
     MatDialogModule,
     BrowserAnimationsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMatIntlTelInputComponent,
     
   ],
   
