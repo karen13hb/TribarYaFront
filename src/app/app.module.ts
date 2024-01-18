@@ -18,6 +18,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms'; 
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
+import {MatInputModule} from '@angular/material/input';
+import { InputTelComponent } from './shared/Resources/input-tel/input-tel.component';
 
 
 const appRoutes: Routes=[
@@ -30,6 +32,9 @@ const appRoutes: Routes=[
   {
     path:'modal',component:ModalGenerarReservaComponent
   },
+  {
+    path:'input',component:InputTelComponent
+  },
   
 ];
 
@@ -38,7 +43,8 @@ const appRoutes: Routes=[
     AppComponent,
     BarDashboardComponent,
     LoginComponent,
-    ModalGenerarReservaComponent
+    ModalGenerarReservaComponent,
+    InputTelComponent
    
   ],
   imports: [
@@ -57,7 +63,7 @@ const appRoutes: Routes=[
     BrowserAnimationsModule,
     ReactiveFormsModule,
     NgxMatIntlTelInputComponent,
-    
+    MatInputModule
   ],
   
   providers: [],

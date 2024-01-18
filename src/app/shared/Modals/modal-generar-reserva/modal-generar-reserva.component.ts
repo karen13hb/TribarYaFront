@@ -39,7 +39,7 @@ export class ModalGenerarReservaComponent implements OnInit{
 			numPersonas: new FormControl({value:null,disabled:false}, [Validators.required]),
 			numCelular:new FormControl({value:null,disabled:false}, [Validators.required]),
 			codigoReserva: new FormControl({value:null,disabled:true}, [Validators.required]),
-			phone: new FormControl({value:null,disabled:false}, [Validators.required]),
+			// phone: new FormControl({value:null,disabled:false}, [Validators.required]),
 		});
 
 		this.formGenerarReserva.get('listaCuando')?.valueChanges.subscribe(value => {
@@ -110,6 +110,7 @@ export class ModalGenerarReservaComponent implements OnInit{
   }
 
   public covertInputToDto():ReservationDto{
+	debugger
 	let timeToWait= this.formGenerarReserva.get('tiempoEspera')?.value
 	timeToWait = timeToWait*this.segundos;
 
@@ -132,7 +133,7 @@ export class ModalGenerarReservaComponent implements OnInit{
         bar: {
           id: this.barId
         },
-        code: this.formGenerarReserva.get('codigoReserva'),
+        code: this.formGenerarReserva.get('codigoReserva')?.value,
         timeWaitUserInSeconds: timeToWait,
         isToday: this.isToday,
         fecha_reserva: utcDate,
@@ -145,7 +146,7 @@ export class ModalGenerarReservaComponent implements OnInit{
   }
 
   public crearReserva():void{
-
+	debugger
 	this.reservationsService.createReservation(this.covertInputToDto()).subscribe(
 		(response) => {		  
 		  console.log('Reserva creada con éxito', response);
